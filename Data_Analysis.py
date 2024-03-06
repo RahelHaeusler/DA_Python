@@ -1,0 +1,1 @@
+# check if Git was successfully updated
