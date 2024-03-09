@@ -120,7 +120,18 @@ def histogramplot(df):
     plt.grid(True)
     plt.show()
 
+def check_duplicates(df):
+    # Check for duplicate rows
+    duplicates = df.duplicated()
 
+    # Count the number of duplicate rows
+    num_duplicates = duplicates.sum()
+
+    if num_duplicates > 0:
+        print("Duplicate rows found:")
+        print(df[duplicates])
+    else:
+        print("No duplicate rows found.")
 
 # Provide the file path of the CSV file
 file_path = "marketing.csv"
@@ -130,9 +141,9 @@ df = pd.read_csv(file_path, delimiter=';')
 # uncomment the line to run the function
 # statistics_csv(df)
 # analyze_csv(df)
-visualize_csv(df)
+# visualize_csv(df)
 # histogramplot(df)
-
+check_duplicates(df)
 # Scatterplot variables towards the Subscription (Y) does not make sense, as there are only two variables
 # for each subscription
 # scatterplot(df)
