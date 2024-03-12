@@ -1,4 +1,6 @@
 # inspiraton https://www.kaggle.com/code/janiobachmann/bank-marketing-campaign-opening-a-term-deposit/notebook
+# see possible data visualization
+# https://medium.com/@caglarlaledemir/data-visualization-with-python-seaborn-library-3d276302d715
 
 import pandas as pd
 import numpy as np
@@ -7,8 +9,6 @@ import seaborn as sns
 
 # functions to analyze the dataset
 ################################
-# for creating a table for statistical numbers
-
 
 def statistics_csv(df):
     # Display basic statistics of numerical columns
@@ -72,7 +72,7 @@ def visualize_csv(df):
     plt.show()
 
 
-def scatterplot(df):
+#def scatterplot(df):
     # Scatter Plot for age and subscription to fixed term deposit
     plt.figure(figsize=(8, 6))
     plt.scatter(df['age'], df['y'], color='blue', alpha=0.5)
@@ -133,6 +133,80 @@ def check_duplicates(df):
     else:
         print("No duplicate rows found.")
 
+def boxplot(df):
+    # Plotting
+    plt.figure(figsize=(8, 6))
+    plt.boxplot(df['previous'])
+    plt.title('Box Plot of Previous')
+    plt.xlabel('Variable')
+    plt.ylabel('Values')
+    plt.grid(True)
+    plt.show()
+
+def histogram(df):
+    # Filter out non-numeric columns
+    numeric_columns = df.select_dtypes(include=['int', 'float']).columns
+
+    # Create histograms for each numeric variable
+    for column in numeric_columns:
+        plt.figure(figsize=(8, 6))
+        plt.hist(df[column], bins=20, color='skyblue', edgecolor='black')
+        plt.title(f'Histogram of {column}')
+        plt.xlabel(column)
+        plt.ylabel('Frequency')
+        plt.grid(True)
+        plt.show()
+
+def scatterplot(df):
+    # Replace missing values with a placeholder (e.g., NaN)
+    df.fillna(value=np.nan, inplace=True)
+
+    # Create a pairplot
+    sns.pairplot(df)
+    plt.show()
+
+def boxplot(df):
+    numerical_columns = ['age', 'campaign', 'previous', 'emp.var.rate',
+                         'cons.price.idx', 'cons.conf.idx', 'euribor3m']  # Add other numerical variables
+
+    for column in numerical_columns:
+        plt.figure(figsize=(8, 6))
+        plt.boxplot(df[column])
+        plt.title(f'Box Plot of {column}')
+        plt.ylabel(column)
+        plt.grid(True)
+        plt.show()
+
+def heatmap(df):
+    # Select numeric columns (excluding 'y' if it's the target variable)
+    numeric_columns = ['age', 'campaign', 'previous', 'emp.var.rate',
+                       'cons.price.idx', 'cons.conf.idx', 'euribor3m']
+
+    # Calculate the correlation matrix
+    corr_matrix = df[numeric_columns].corr()
+
+    # Plot the heatmap
+    plt.figure(figsize=(12, 10))
+    sns.heatmap(corr_matrix, annot=True, cmap='coolwarm', fmt=".2f")
+    plt.title('Correlation Heatmap')
+    plt.show()
+
+def pairplot(df):
+    # Load the dataset into a DataFrame
+    df = pd.read_csv('your_dataset.csv')
+
+    # If 'y' is the target variable, drop it from the DataFrame
+    if 'y' in df.columns:
+        df.drop(columns=['y'], inplace=True)
+
+    # Encode categorical variables if needed
+    # For example, if 'job' is a categorical variable:
+    # df['job'] = df['job'].astype('category').cat.codes
+
+    # Create pairplot
+    sns.pairplot(df)
+    plt.show()
+
 # Provide the file path of the CSV file
 file_path = "marketing.csv"
 # Read the CSV file into a pandas DataFrame with semicolon as delimiter
@@ -143,8 +217,11 @@ df = pd.read_csv(file_path, delimiter=';')
 # analyze_csv(df)
 # visualize_csv(df)
 # histogramplot(df)
-check_duplicates(df)
-# Scatterplot variables towards the Subscription (Y) does not make sense, as there are only two variables
-# for each subscription
+# check_duplicates(df)
+# boxplot(df)
+# histogram(df)
 # scatterplot(df)
-
+# boxplot(df)
+# heatmap(df)
+# pairplot not running yet
+# pairplot(df)
